@@ -6,7 +6,9 @@ class InventoryList extends Component{
         return(
             <div id="InventoryList">
                 <h1>InventoryList.js</h1>
-                <InventoryItem />
+                <ul>
+                    { this.props.items.map( ( item, index )=><li key={ index }><InventoryItem item={ item }/></li> ) }
+                </ul>
             </div>
         ) //end return
     } // end render

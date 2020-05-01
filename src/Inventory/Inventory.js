@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import InventoryList from '../InventoryList/InventoryList';
+import Axios from 'axios';
 
 class Inventory extends Component{
     state = {
@@ -17,6 +18,26 @@ class Inventory extends Component{
             items: [ ...this.state.items, this.state.currentItem ]
         }) //end set state
     } // end addItem
+
+    componentDidMount = () =>{
+        this.getItems();
+    }
+
+    getItems = () =>{
+        console.log( 'in getItems' );
+        Axios({
+            method: 'GET',
+            url: '/inventory'
+        }).then( ( response )=>{
+            console.log( 'back from Get with:', response.data );
+            this.setState({
+                items: response.data
+            }) //end set state
+        }).catch( ( err )=>{
+            alert( 'error getting items:' );
+            console.log( err );
+        }) // end Axios
+    } // end getItems
 
     handleChangeFor = ( event, property )=>{
         // console.log( 'in handleChangeFor:', property, event.target.value );
@@ -44,8 +65,7 @@ class Inventory extends Component{
                     </input>
                     <button onClick={ this.addItem }>Add Item</button>
                 </div>
-                <h3>{JSON.stringify( this.state ) }</h3>
-                <InventoryList />
+                <InventoryList items={ this.state.items }/>
             </div>
         ) //end return
     } // end render
